@@ -1,13 +1,5 @@
-const express = require('express');
+const app = require('./app')
 
-const app = express();
+app.listen(process.env.PORT || 3000);
 
-// middlewares
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-
-// Routes
-app.use("/usuaio",require('./controllers/user.controller'));
-
-app.listen(3000);
-console.log('Server on port', 3000);
+console.log('server listen on port', 3000);
