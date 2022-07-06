@@ -84,10 +84,12 @@ solicitudCtr.modificar_actualizaciones_estado_solicitud = async (req, res) => {
 
 solicitudCtr.modificar_actualizaciones_validados_estado_solicitud = async (req, res) => {
     try {
+        const {id_solestado, id_solicitud} = req.body;
         const response = await pool.query(
             `update solicitud
-                set id_solestado  = '2'
-                where id_solicitud = 1;`
+                set id_solestado  = $1
+                where id_solicitud = $2;` ,
+                [id_solestado, id_solicitud]
         );
         return res.status(200).json(response.rows);
     } catch (e) {
@@ -133,10 +135,12 @@ solicitudCtr.obtener_consultas_tasa = async (req, res) => {
 //Registrar constancia de pago
 solicitudCtr.modificar_registro_constancia_pago = async (req, res) => {
     try {
+        const {voucher, pago, id_solestado, id_solicitud} = req.body;
         const response = await pool.query(
             `update solicitud 
-                set voucher  = 'Link de voucher', pago  = 'P', id_solestado = '4'
-                where id_solicitud = '1';`
+                set voucher  = $1, pago  = $2, id_solestado = $3
+                where id_solicitud = $4;` ,
+                [voucher, pago, id_solestado, id_solicitud]
         );
         return res.status(200).json(response.rows);
     } catch (e) {
@@ -202,10 +206,12 @@ solicitudCtr.obtener_pago_validado = async (req, res) => {
 //Cambiar estado de solicitudes
 solicitudCtr.modificar_estado_solicitud = async (req, res) => {
     try {
+        const {id_solestado, id_solicitud} = req.body;
         const response = await pool.query(
             `update solicitud 
-                set id_solestado = '6'
-                where id_solicitud = '1';`
+                set id_solestado = $1
+                where id_solicitud = $2;` ,
+                [id_solestado, id_solicitud]
         );
         return res.status(200).json(response.rows);
     } catch (e) {
@@ -265,10 +271,12 @@ solicitudCtr.obtener_lista_solicitud_pago_registrados = async (req, res) => {
 //Modificar solicitudes de inspeccion
 solicitudCtr.modificar_solicitud_inspeccion = async (req, res) => {
     try {
+        const {inspeccion, id_solicitud} = req.body;
         const response = await pool.query(
             `update solicitud 
-                set inspeccion = '1' 
-                where id_solicitud = 1;`
+                set inspeccion = $1 
+                where id_solicitud = $2;` ,
+                [inspeccion, id_solicitud]
         );
         return res.status(200).json(response.rows);
     } catch (e) {

@@ -23,9 +23,11 @@ solicitudhistoricoCtr.insertSolicitud_Historico = async(req, res) => {
 //Registro de operaci�n en historico de solicitudes
 solicitudhistoricoCtr.insertRegistro_solicitud_Historico = async(req, res) => {
     try {
+        const {id_solicitud, id_usuariorev, id_solestado, observaciones} = req.body;
         const response = await pool.query(
                 `insert into solicitud_historico (id_solicitud, id_usuariorev, id_solestado, fecha_reg, observaciones)
-                values (1,1,'2',now(),'Completado');`
+                values ($1,$2,$3,now(),$4);` , 
+                [id_solicitud, id_usuariorev, id_solestado, observaciones]
         );
         return res.status(200).json(response.rows);
     } catch (e) {
@@ -37,9 +39,11 @@ solicitudhistoricoCtr.insertRegistro_solicitud_Historico = async(req, res) => {
 //--Registro de operaci�n en historico de solicitudes
 solicitudhistoricoCtr.insertRegistro_Historico_Solicitudes = async(req, res) => {
     try {
+        const {id_solicitud, id_usuariorev, id_solestado, observaciones} = req.body;
         const response = await pool.query(
                 `insert into solicitud_historico (id_solicitud, id_usuariorev, id_solestado, fecha_reg, observaciones)
-                values (1,3,'5',now(),'Pago validado');`
+                values ($1,$2,$3,now(),$4);` ,
+                [id_solicitud, id_usuariorev, id_solestado, observaciones]
         );
         return res.status(200).json(response.rows);
     } catch (e) {
@@ -51,9 +55,11 @@ solicitudhistoricoCtr.insertRegistro_Historico_Solicitudes = async(req, res) => 
 //--Registro de operaci�n en historico de solicitudes
 solicitudhistoricoCtr.insertRegistro_operacion_Historico_Solicitudes = async(req, res) => {
     try {
+        const {id_solicitud, id_usuariorev, id_solestado, observaciones} = req.body;
         const response = await pool.query(
                 `insert into solicitud_historico (id_solicitud, id_usuariorev, id_solestado, fecha_reg, observaciones)
-                values (1,1,'6',now(),'Licencia emitida sin observaciones');`
+                values ($1,$2,$3,now(),$4);` ,
+                [id_solicitud, id_usuariorev, id_solestado, observaciones]
         );
         return res.status(200).json(response.rows);
     } catch (e) {
