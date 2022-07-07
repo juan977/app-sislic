@@ -10,7 +10,7 @@ solicitudDocumentoCtr.insertSolicitud_Documentos = async(req, res) => {
         const {id_solicitud, id_tipodoc, link_file} = req.body;
         const response = await pool.query(
                 `insert into solicitud_documentos (id_solicitud, id_tipodoc, link_file, estado)
-                values ($1,$2,$3,'1');` ,
+                values ($1,$2,$3,'1') returning id_documetno;` ,
                 [id_solicitud, id_tipodoc, link_file]
         );
         return res.status(200).json(response.rows);

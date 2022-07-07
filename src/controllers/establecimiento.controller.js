@@ -13,7 +13,7 @@ establecimientoCtr.insertEstablecimiento = async (req, res) => {
             `insert into establecimiento (id_contribuyente, direccion, numero, letra, interior, interior_let, mz, lote, bloque, dpto, urb, 
                 tipo_predio, clasificacion, zonificacion, area_local, aforo, antiguedad, nombre_comercial, referencia, 
                 pisos, empleados)
-                values ($1,$2,$3,'','','','','','','','',$4,$5,$6,$7,$8,$9,&10,$11,$12,$13);` ,
+                values ($1,$2,$3,'','','','','','','','',$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) returning id_establecimiento;` ,
             [id_contribuyente, direccion, numero, tipo_predio, clasificacion, zonificacion, area_local,
                 aforo, antiguedad, nombre_comercial, referencia, pisos, empleados]
         );
@@ -64,7 +64,7 @@ establecimientoCtr.insert_actividades_de_establecimiento = async (req, res) => {
         const {id_establecimiento,id_acteconomico} = req.body;
         const response = await pool.query(
             `insert into establecimiento_actividad (id_establecimiento,id_acteconomico)
-            values ($1,$6);` , [id_establecimiento,id_acteconomico]
+            values ($1,$6); returning id_establecimiento` , [id_establecimiento,id_acteconomico]
         );
         return res.status(200).json(response.rows);
     } catch (e) {

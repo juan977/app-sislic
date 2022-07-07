@@ -10,7 +10,7 @@ inspeccionCtr.insertInspeccion = async (req, res) => {
         const { id_solicitud, id_establecimiento, comentario, link_file, id_usuarioreg } = req.body;
         const response = await pool.query(
             `insert into inspeccion (id_solicitud, id_establecimiento, comentario, link_file, fecha_registro,id_usuarioreg)
-                values ($1,$2,$3,$4,now(),$5);` ,
+                values ($1,$2,$3,$4,now(),$5) returning id_inspeccion;` ,
             [id_solicitud, id_establecimiento, comentario, link_file, id_usuarioreg]
         );
         return res.status(200).json(response.rows);
