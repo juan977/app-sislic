@@ -13,11 +13,13 @@ const contribuyenteRoutes = require('./routes/contribuyente.router')
 const solicitudRoutes = require('./routes/solicitud.router')
 const solicitudhistoricoRoutes = require('./routes/solicitudhistorico.router')
 const solicitud_documentoRoutes = require('./routes/solicitud.documento.router')
-const ActividadEconomicaCtr = require('./routes/actividad.economico.router')
+const ActividadEconomicoRoutes = require('./routes/actividad.economico.router')
+const inspeccionRoutes = require('./routes/inspeccion.router')
 
 const app = express();
 var cors = require('cors');
 const { encryptPassword } = require('./libs/helpers')
+
 
 app.use(express.json());
 app.use(cors());
@@ -37,7 +39,8 @@ app.use('/api/contribuyente', contribuyenteRoutes);
 app.use('/api/establecimiento', establecimientoRoutes);
 app.use('/api/solicitudhistorico', solicitudhistoricoRoutes)
 app.use('/api/solicitud_documento', solicitud_documentoRoutes)
-app.use('/api/solicitud_actividad_economico', ActividadEconomicaCtr)
+app.use('/api/solicitud_actividad_economico', ActividadEconomicoRoutes)
+app.use('/api/inspeccion', inspeccionRoutes)
 
 //ejemplos
 app.use('/api/personas', personaRoutes);
