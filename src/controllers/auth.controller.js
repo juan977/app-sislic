@@ -1,53 +1,41 @@
-const pool = require('../database');
+const pool = require("../database");
 
-const jwt = require('jsonwebtoken');
-const helpers = require('../libs/helpers'); 
-const bcrypt = require('bcryptjs');
-const refreshTokens = [];
+const jwt = require("jsonwebtoken");
+const helpers = require("../libs/helpers");
+const bcrypt = require("bcryptjs");
 const secret = "oido-amigo-HMDA-access-token";
 const refreshTokenSecret = "oido-amigo-HMDA-refresh-access-token";
 
-const authCtr = {}
+const authCtr = {};
 
-authCtr.login = async (req, res)=>{
-    try {
-       const {username, password} = req.body;
-       //console.log(pass);
-       const response = await pool.query('select * from usuario where username = $1', [username]);      
-       if(response.rows.length!=0){           
-           const passold = response.rows[0].password;
-           if(await bcrypt.compare(password, passold)){
-                const usuario = {
-                    idusuario : response.rows[0].idusuario,                    
-                    username : response.rows[0].username,
-                    idrol : response.rows[0].idrol,
-                    idpsicologo : response.rows[0].idpsicologo
-                }
-                const accessToken = jwt.sign({usuario}, secret, {expiresIn:'7200s'});
-                const refreshToken = jwt.sign({usuario}, refreshTokenSecret);
-                refreshTokens.push(refreshToken);
-                
-                
-                
-               
-                return res.status(200).json({
-                    accessToken,
-                    refreshToken
-                    
-                });
-           }else{
-                return res.status(403).json({
-                    message: 'Username o Password incorrectos...!'
-                });
-           }           
-       }
-       return res.status(403).json({
-           message: 'Username o Password incorrectos...!'
-       });
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({message: 'Error al validar usuario...!'});
-    }    
+authCtr.login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+
+    const { rows } = await pool.query(
+      "select u.usuario,u.clave,r.nombre from usuario u  join rol r on (u.id_rol=r.id_rol)   where u.usuario = $1",
+      [username]
+    );
+    const { id_usuario, nombre, clave } = rows[0];
+    if (rows.length != 0 && (await bcrypt.compare(password, clave))) {
+    
+      const usuario = {
+        idusuario: id_usuario,
+        username,
+        rol: nombre,
+      };
+
+      const accessToken = jwt.sign({ usuario }, secret, {
+        expiresIn: "900s",
+      });
+      const refreshToken = jwt.sign({ usuario }, refreshTokenSecret);
+
+      return res.status(200).json({ accessToken, refreshToken });
+    }
+    next(new Error("Credenciales de acceso incorrectas"));
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports = authCtr;

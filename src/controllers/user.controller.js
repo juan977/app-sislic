@@ -1,57 +1,63 @@
-const pool = require('../database')
-const helpers = require('../libs/helpers');
-const bcrypt = require('bcryptjs');
+const pool = require("../database");
+const { encryptPassword, matchPassword } = require("../libs/helpers");
 
-const userCtr = {}
+const userCtr = {};
 
+userCtr.getAccessFromRoleName = async (req, res, next) => {
+  try {
+    const { role } = req.params;
+    const response = await pool.query(
+      "SELECT a.id_acceso,a.nombre, a.ruta FROM ROL R JOIN ROL_ACCESO RA ON (R.ID_ROL = RA.ID_ROL) JOIN ACCESO A ON (A.ID_ACCESO = RA.ID_ACCESO) WHERE R.NOMBRE   =$1",
+      [role]
+    );
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    next(e);
+  }
+};
 
-userCtr.getAccess = async(req, res)=>{
-    try{
-        const id = parseInt(req.params.id);
-        const resp = await pool.query('select * from accesos where idrol =$1',[id]);
-        return res.status(200).json(resp.rows);
-    }catch(e){
-        console.log(e);
-        return res.status(500).json('Internal Server error...!');
+userCtr.createUser = async (req, res, next) => {
+  try {
+    const { username, password, idrol } = req.body;
+    const password2 = await encryptPassword(password);
+    const response = await pool.query(
+      "insert into usuario(usuario, clave, id_rol) values($1,$2,$3)",
+      [username, password2, idrol ? idrol : 5]
+    );
+    return res.status(201).json({
+      status: "Usuario creado",
+    });
+  } catch (e) {
+    return next(e);
+  }
+};
+
+userCtr.updateUser = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { pass } = req.body;
+    const response = await pool.query(
+      "select * from usuario where idusuario = $1",
+      [id]
+    );
+    if (response.rows.length != 0) {
+      const passold = response.rows[0].password;
+      if (await matchPassword(pass, passold)) {
+        const { username, password } = req.body;
+        const password2 = await encryptPassword(password);
+        await pool.query(
+          "update usuario set username=$1, password=$2 where idusuario=$3",
+          [username, password2, id]
+        );
+        return res
+          .status(200)
+          .json(`Usuario ${id} modificado correctamente...!`);
+      }
     }
-}
-
-userCtr.createUser = async(req, res)=>{
-
-    try {
-        const{ username, password, idrol, idpsicologo} = req.body;
-        const password2 = await helpers.encryptPassword(password);
-        await pool.query('insert into usuario(username, password, idrol, idpsicologo) values($1,$2,$3,$4)', [username, password2, idrol, idpsicologo]);
-        return res.status(200).json(
-            `Usuario ${ username } creado correctamente...!`);
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json('Internal Server error...!');
-    }
-
-}
-
-userCtr.updateUser = async(req, res) => {
-        try {
-            const id = parseInt(req.params.id);
-            const { pass } = req.body;
-            const response = await pool.query('select * from usuario where idusuario = $1', [id]);      
-            if(response.rows.length!=0){
-                const passold = response.rows[0].password;
-                if(await bcrypt.compare(pass, passold)){
-                    const {username, password} = req.body;
-                    const password2 = await helpers.encryptPassword(password);
-                    await pool.query('update usuario set username=$1, password=$2 where idusuario=$3', [username, password2, id]);
-                    return res.status(200).json(
-                `Usuario ${ id } modificado correctamente...!`);
-                 }
-            }
-        } catch (e) {
-            console.log(e);
-            return res.status(500).json('Internal Server error...!');
-        }
-    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal Server error...!");
+  }
+};
 
 module.exports = userCtr;
-
-
