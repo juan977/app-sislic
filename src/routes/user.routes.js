@@ -9,7 +9,7 @@ const userCtr = require('../controllers/user.controller');
 const { checkTokenMonitor, hasRole } = require('../auth/token_validation');
 
 
-router.get('/access/:role', hasRole(["default"]),userCtr.getAccessFromRoleName);
+router.get('/access/:role',userCtr.getAccessFromRoleName);
 router.post('/create', userCtr.createUser);
 router.put('/update/:id', userCtr.updateUser);
 

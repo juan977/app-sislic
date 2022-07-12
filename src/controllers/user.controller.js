@@ -60,4 +60,6 @@ userCtr.updateUser = async (req, res) => {
   }
 };
 
+
+
 module.exports = userCtr;
