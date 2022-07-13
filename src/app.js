@@ -37,12 +37,6 @@ app.use("/api/solicitud_documento", solicitud_documentoRoutes);
 app.use("/api/solicitud_actividad_economico", ActividadEconomicoRoutes);
 app.use("/api/inspeccion", inspeccionRoutes);
 
-//ejemplos
-//app.use("/api/personas", personaRoutes);
-//app.use("/api/psicologo", psicologoRoutes);
-//app.use("/api/psicologos", psicologosRoutes);
-//app.use("/api/paciente", pacienteRoutes);
-
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 
