@@ -10,7 +10,7 @@ solicitudDocumentoCtr.insertSolicitud_Documentos = async (req, res) => {
     const { id_solicitud, id_tipodoc, link_file } = req.body;
     const response = await pool.query(
       `insert into solicitud_documentos (id_solicitud, id_tipodoc, link_file, estado)
-                values ($1,$2,$3,'1') returning id_documetno;`,
+                values ($1,$2,$3,'1') returning id_documento;`,
       [id_solicitud, id_tipodoc, link_file]
     );
     return res.status(200).json(response.rows);
@@ -23,10 +23,11 @@ solicitudDocumentoCtr.insertSolicitud_Documentos = async (req, res) => {
 //lISTA DE DOCUMENTOS
 solicitudDocumentoCtr.obtener_lista_Documentos = async (req, res) => {
   try {
+    const { idsolicitud } = req.params;
     const response = await pool.query(
       `select * 
                 from solicitud_documentos sd 
-                where sd.id_solicitud  = '1';`
+                where sd.id_solicitud  = $1;`, [idsolicitud]
     );
     return res.status(200).json(response.rows);
   } catch (e) {
