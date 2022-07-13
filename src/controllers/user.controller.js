@@ -60,6 +60,22 @@ userCtr.updateUser = async (req, res) => {
   }
 };
 
+userCtr.getAllUsers = async (req, res, next) => {
+  try {
+    const response = await pool.query("select * from usuario");
+    return res.status(200).json(response.rows);
+  } catch (error) {
+    next(error);
+  }
+};
 
+userCtr.getAllRoles = async (req, res, next) => {
+  try {
+    const response = await pool.query("select id_rol,nombre from rol");
+    return res.status(200).json(response.rows);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = userCtr;

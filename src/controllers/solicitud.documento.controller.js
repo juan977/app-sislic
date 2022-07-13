@@ -1,55 +1,64 @@
-const pool = require ('../database')
-        // const helpers = require('../libs/helpers');
+const pool = require("../database");
+// const helpers = require('../libs/helpers');
 
 //insertar solicitud documento
-const solicitudDocumentoCtr = {}
+const solicitudDocumentoCtr = {};
 
 //Insertar solicitudes de documentos
-solicitudDocumentoCtr.insertSolicitud_Documentos = async(req, res) => {
-    try {
-        const {id_solicitud, id_tipodoc, link_file} = req.body;
-        const response = await pool.query(
-                `insert into solicitud_documentos (id_solicitud, id_tipodoc, link_file, estado)
-                values ($1,$2,$3,'1') returning id_documetno;` ,
-                [id_solicitud, id_tipodoc, link_file]
-        );
-        return res.status(200).json(response.rows);
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json('Internal Server error...!');
-    }
-}
+solicitudDocumentoCtr.insertSolicitud_Documentos = async (req, res) => {
+  try {
+    const { id_solicitud, id_tipodoc, link_file } = req.body;
+    const response = await pool.query(
+      `insert into solicitud_documentos (id_solicitud, id_tipodoc, link_file, estado)
+                values ($1,$2,$3,'1') returning id_documetno;`,
+      [id_solicitud, id_tipodoc, link_file]
+    );
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal Server error...!");
+  }
+};
 
 //lISTA DE DOCUMENTOS
-solicitudDocumentoCtr.obtener_lista_Documentos = async(req, res) => {
-    try {
-        const response = await pool.query(
-                `select * 
+solicitudDocumentoCtr.obtener_lista_Documentos = async (req, res) => {
+  try {
+    const response = await pool.query(
+      `select * 
                 from solicitud_documentos sd 
                 where sd.id_solicitud  = '1';`
-        );
-        return res.status(200).json(response.rows);
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json('Internal Server error...!');
-    }
-}
+    );
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal Server error...!");
+  }
+};
 
 //Actualizaciones de estados de los documentos
-solicitudDocumentoCtr.modificar_estado_Documentos = async(req, res) => {
-    try {
-        const {estado, observaciones, id_usuariorev, id_solicitud} = req.body;
-        const response = await pool.query(
-                `update solicitud_documentos 
+solicitudDocumentoCtr.modificar_estado_Documentos = async (req, res) => {
+  try {
+    const { estado, observaciones, id_usuariorev, id_solicitud } = req.body;
+    const response = await pool.query(
+      `update solicitud_documentos 
                 set estado = $1, observaciones = $2, id_usuariorev = $3
-                where id_solicitud = $4;` ,
-                [estado, observaciones, id_usuariorev, id_solicitud]
-        );
-        return res.status(200).json(response.rows);
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json('Internal Server error...!');
-    }
-}
+                where id_solicitud = $4;`,
+      [estado, observaciones, id_usuariorev, id_solicitud]
+    );
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal Server error...!");
+  }
+};
 
-module.exports = solicitudDocumentoCtr
+solicitudDocumentoCtr.obtener_tipo_documentos = async (req, res, next) => {
+  try {
+    const response = await pool.query(`select * from solicitud_tipodoc;`);
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports = solicitudDocumentoCtr;

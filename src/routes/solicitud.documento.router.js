@@ -11,4 +11,6 @@ router.get('/obtener_lista_documentos', solicitudDocumentoCtr.obtener_lista_Docu
 
 router.put('/modificar_estado_documentos', solicitudDocumentoCtr.modificar_estado_Documentos);
 
+
+router.get("/obtener_tipo_documentos", solicitudDocumentoCtr.obtener_tipo_documentos);
 module.exports = router
