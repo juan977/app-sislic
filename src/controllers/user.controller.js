@@ -16,6 +16,7 @@ userCtr.getAccessFromRoleName = async (req, res, next) => {
   }
 };
 
+//Crear nuevos usuarios
 userCtr.createUser = async (req, res, next) => {
   try {
     const { username, password, idrol } = req.body;
@@ -32,6 +33,7 @@ userCtr.createUser = async (req, res, next) => {
   }
 };
 
+//Modificar los usuarios
 userCtr.updateUser = async (req, res) => {
   try {
     const id = parseInt(req.params.id);

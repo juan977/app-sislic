@@ -34,7 +34,6 @@ app.use("/api/solicitud_documento", solicitud_documentoRoutes);
 app.use("/api/solicitud_actividad_economico", ActividadEconomicoRoutes);
 app.use("/api/inspeccion", inspeccionRoutes);
 
-
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 
