@@ -9,7 +9,6 @@ const hasRole = (roles) => (req, res, next) => {
     message: "Unauthorized",
   };
   const bearerHeader = req.headers["authorization"];
-  console.log(req)
   if (!bearerHeader) {
     return res.status(401).json(unauthorized);
   }

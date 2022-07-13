@@ -1,8 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
+var cors = require("cors");
+
 
 const userRoutes = require("./routes/user.routes");
-
 const authRoutes = require("./routes/auth.routes");
 const establecimientoRoutes = require("./routes/establecimiento.router");
 const contribuyenteRoutes = require("./routes/contribuyente.router");
@@ -13,8 +14,6 @@ const ActividadEconomicoRoutes = require("./routes/actividad.economico.router");
 const inspeccionRoutes = require("./routes/inspeccion.router");
 
 const app = express();
-var cors = require("cors");
-const { encryptPassword } = require("./libs/helpers");
 
 app.use(express.json());
 app.use(cors());
@@ -22,11 +21,9 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.get("/", function (req, res, next) {
-  res.send("Backend Oído Amigo Funciona Correctamente...!");
+  res.send("Hola");
 });
 
-// app.use('/api/auth', authRoutes);
-// app.use('/api/auth/users', userRoutes);
 
 //nuestre rutas
 app.use("/api/solicitud", solicitudRoutes);
