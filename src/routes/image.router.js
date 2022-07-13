@@ -1,37 +1,15 @@
-require('dotenv').config()
-const { Router } = require('express')
+const { Router } = require("express");
 
-const router = new Router();
+const imgRouter = Router();
 
-const path = require('path');
-const multer = require('multer');
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
-const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../public'),
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
-})
-
-const uploadimage = multer({
-    storage,
-    limits: { fileSize: 1000000}
-}).single('image');
-
-router.post('/images/upload', (req, res) => {
-    uploadimage(req, res, (err) => {
-        if (err) {
-            err.message = 'Error al subir el archivo'
-            return res.send(err);
-        }
-        console.log(req.file)
-        res.send(process.env.URL_FILE + 
-            "/upload/" + req.file.originalname);
-    });
+imgRouter.post("/single", upload.single("avatar"), (req, res, next) => {
+  console.log(req.file);
+  res.json({
+    status: "hola",
+  });
 });
 
-router.get('/', (req,res) => {
-    res.send({"response":"Funciona correctamente"});
-});
-
-module.exports = router;
+module.exports = imgRouter;

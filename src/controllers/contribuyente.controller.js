@@ -1,6 +1,6 @@
 const pool = require("../database");
 const axios = require("axios").default;
-const captcha = require("svg-captcha")
+const captcha = require("svg-captcha");
 
 // const helpers = require('../libs/helpers');
 
@@ -79,12 +79,25 @@ contribuyenteCtr.getContibruyenteFromAPI = async (req, res, next) => {
 
 contribuyenteCtr.getCaptcha = async (req, res, next) => {
   try {
-    const createdCaptcha = captcha.create()
-    console.log(createdCaptcha.text)
-    
-    res.json(createdCaptcha)
+    const createdCaptcha = captcha.create();
+    console.log(createdCaptcha.text);
+
+    res.json(createdCaptcha);
   } catch (e) {
     next(e);
+  }
+};
+
+contribuyenteCtr.getSolicitudesByRuc = async (req, res, next) => {
+  try {
+    const { ruc } = req.params;
+    const response = await pool.query(
+      "select se.id_solestado,s.tipotramite, se.nombre from solicitud s join contribuyente c on (s.id_contribuyente=c.id_contribuyente) join solicitud_estado se on (se.id_solestado=s.id_solestado)  where ruc = $1",
+      [ruc]
+    );
+    res.json(response.rows);
+  } catch (error) {
+    next(error);
   }
 };
 module.exports = contribuyenteCtr;

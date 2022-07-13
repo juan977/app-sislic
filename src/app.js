@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 var cors = require("cors");
 
-
 const userRoutes = require("./routes/user.routes");
 const authRoutes = require("./routes/auth.routes");
 const establecimientoRoutes = require("./routes/establecimiento.router");
@@ -12,6 +11,7 @@ const solicitudhistoricoRoutes = require("./routes/solicitudhistorico.router");
 const solicitud_documentoRoutes = require("./routes/solicitud.documento.router");
 const ActividadEconomicoRoutes = require("./routes/actividad.economico.router");
 const inspeccionRoutes = require("./routes/inspeccion.router");
+const imgRouter = require("./routes/image.router");
 
 const app = express();
 
@@ -24,7 +24,6 @@ app.get("/", function (req, res, next) {
   res.send("Hola");
 });
 
-
 //nuestre rutas
 app.use("/api/solicitud", solicitudRoutes);
 app.use("/api/contribuyente", contribuyenteRoutes);
@@ -33,7 +32,7 @@ app.use("/api/solicitudhistorico", solicitudhistoricoRoutes);
 app.use("/api/solicitud_documento", solicitud_documentoRoutes);
 app.use("/api/solicitud_actividad_economico", ActividadEconomicoRoutes);
 app.use("/api/inspeccion", inspeccionRoutes);
-
+app.use("/api/upload", imgRouter );
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 
