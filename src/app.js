@@ -12,6 +12,7 @@ const solicitud_documentoRoutes = require("./routes/solicitud.documento.router")
 const ActividadEconomicoRoutes = require("./routes/actividad.economico.router");
 const inspeccionRoutes = require("./routes/inspeccion.router");
 const imgRouter = require("./routes/image.router");
+const establecimientoPisosRouter = require("./routes/establecimiento.pisos.router");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/inspeccion", inspeccionRoutes);
 app.use("/api/upload", imgRouter );
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/establecimiento_pisos", establecimientoPisosRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({

@@ -13,7 +13,6 @@ router.get(
   "/obtener_datos_solicitud_contribuyentes_establecimiento",
   solicitudCtr.obtener_datos_colicitud_contribuyentes_establecimiento
 );
-router.get("/obtener_consultas_estado", solicitudCtr.obtener_consultas_estado);
 router.get("/obtener_consultas_tasa", solicitudCtr.obtener_consultas_tasa);
 router.get(
   "/obtener_listas_solicitud_pago",
@@ -38,20 +37,8 @@ router.get(
 );
 
 router.put(
-  "/modificar_actualizaciones_estado_solicitud",
-  solicitudCtr.modificar_actualizaciones_estado_solicitud
-);
-router.put(
-  "/modificar_actualizaciones_validados_estado_solicitud",
-  solicitudCtr.modificar_actualizaciones_validados_estado_solicitud
-);
-router.put(
   "/modificar_registro_constancia_pago",
   solicitudCtr.modificar_registro_constancia_pago
-);
-router.put(
-  "/modificar_estado_solicitud",
-  solicitudCtr.modificar_estado_solicitud
 );
 router.put(
   "/modificar_solicitud_inspeccion",

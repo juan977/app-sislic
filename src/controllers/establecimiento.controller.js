@@ -41,23 +41,6 @@ establecimientoCtr.obtener_datos_Establecimiento = async (req, res) => {
     }
 }
 
-//insertar datos de pisos en el establecimiento
-establecimientoCtr.obtener_datos_pisos_establecimiento = async (req, res) => {
-    try {
-        const response = await pool.query(
-            `select piso, m2  
-            from establecimiento_pisos ep  
-            inner join establecimiento e on ep.id_establecimiento = e.id_establecimiento
-            inner join solicitud s  on e.id_establecimiento  = s.id_establecimiento 
-            where s.id_solicitud = '1';`
-        );
-        return res.status(200).json(response.rows);
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json('Internal Server error...!');
-    }
-}
-
 //insert actividades de establecimiento
 establecimientoCtr.insert_actividades_de_establecimiento = async (req, res) => {
     try {
