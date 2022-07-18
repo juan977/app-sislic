@@ -36,7 +36,7 @@ app.use("/api/inspeccion", inspeccionRoutes);
 app.use("/api/upload", imgRouter );
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/establecimiento_pisos", establecimientoPisosRouter);
+app.use("/api/establecimientoPisos", establecimientoPisosRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({

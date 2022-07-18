@@ -1,5 +1,6 @@
 const pool = require("../database");
 
+const establecimientoPisosCtr = {}
 //insertar datos de pisos en el establecimiento
 establecimientoPisosCtr.ObtenerDatosPisosEstablecimiento = async (req, res) => {
     try {
