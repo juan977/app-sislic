@@ -22,7 +22,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.get("/", function (req, res, next) {
-  res.send("Hola");
+  res.send("BIENVENIDO AL PROYECTO INTEGRADOR");
 });
 
 //nuestre rutas
