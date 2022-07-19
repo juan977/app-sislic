@@ -16,21 +16,23 @@ authCtr.login = async (req, res, next) => {
       "select u.usuario,u.clave,r.nombre from usuario u  join rol r on (u.id_rol=r.id_rol)   where u.usuario = $1",
       [username]
     );
-    const { id_usuario, nombre, clave } = rows[0];
-    if (rows.length != 0 && (await bcrypt.compare(password, clave))) {
+
+    if (rows.length != 0) {
+      const { id_usuario, nombre, clave } = rows[0];
+        if (await bcrypt.compare(password, clave)) {
+          const usuario = {
+            idusuario: id_usuario,
+            username,
+            rol: nombre,
+          };
     
-      const usuario = {
-        idusuario: id_usuario,
-        username,
-        rol: nombre,
-      };
-
-      const accessToken = jwt.sign({ usuario }, secret, {
-        expiresIn: "900s",
-      });
-      const refreshToken = jwt.sign({ usuario }, refreshTokenSecret);
-
-      return res.status(200).json({ accessToken, refreshToken });
+          const accessToken = jwt.sign({ usuario }, secret, {
+            expiresIn: "900s",
+          });
+          const refreshToken = jwt.sign({ usuario }, refreshTokenSecret);
+    
+          return res.status(200).json({ accessToken, refreshToken });
+        }
     }
     next(new Error("Credenciales de acceso incorrectas"));
   } catch (e) {

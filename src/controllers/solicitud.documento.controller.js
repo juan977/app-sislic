@@ -53,6 +53,25 @@ solicitudDocumentoCtr.modificar_estado_Documentos = async (req, res) => {
   }
 };
 
+//Subir Voucher
+solicitudDocumentoCtr.SubirVoucher = async (req, res) => {
+  try {
+    const voucher = req.file.originalname
+    console.log(voucher)
+    const {id_solicitud} = req.params;
+    const response = await pool.query(
+      `update solicitud 
+                set voucher = $1
+                where id_solicitud = $2;`,
+      [voucher, id_solicitud]
+    );
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal Server error...!");
+  }
+};
+
 solicitudDocumentoCtr.obtener_tipo_documentos = async (req, res, next) => {
   try {
     const response = await pool.query(`select * from solicitud_tipodoc;`);
